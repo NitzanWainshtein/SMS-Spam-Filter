@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp"
+    android:id="@+id/cardBlockedSender"
+    android:backgroundTint="#FFEBEE">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <!-- אייקון חסימה -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🚫"
+            android:textSize="32sp"
+            android:layout_marginEnd="16dp" />
+
+        <!-- פרטי השולח -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvBlockedSender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="מספר השולח"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#212121"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/tvBlockedDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="נחסם ב: 01/01/2024"
+                android:textSize="14sp"
+                android:textColor="#757575" />
+
+            <TextView
+                android:id="@+id/tvMessagesCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="5 הודעות נחסמו"
+                android:textSize="14sp"
+                android:textColor="#D32F2F"
+                android:layout_marginTop="2dp" />
+
+        </LinearLayout>
+
+        <!-- כפתורי פעולה -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnViewMessages"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="צפה"
+                android:textSize="12sp"
+                android:textColor="#2196F3"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:layout_marginBottom="4dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnUnblock"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="בטל"
+                android:textSize="12sp"
+                android:textColor="#F44336"
+                android:minWidth="0dp"
+                android:minHeight="0dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
