@@ -222,7 +222,19 @@
 
         </LinearLayout>
 
-        <!-- שורה שנייה - חסימת שולח -->
+        <!-- שורה שנייה - השולח לא ספאם -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnMarkSenderLegit"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="✨ השולח הזה אינו ספאם (כל ההודעות)"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:backgroundTint="#2196F3"
+            app:cornerRadius="12dp"
+            android:layout_marginBottom="12dp" />
+
+        <!-- שורה שלישית - חסימת שולח -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnBlockSender"
             android:layout_width="match_parent"

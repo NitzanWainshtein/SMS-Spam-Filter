@@ -72,6 +72,7 @@ class MessageDetailActivity : AppCompatActivity() {
         val btnMarkSpam = findViewById<MaterialButton>(R.id.btnMarkSpamDetail)
         val btnMarkLegit = findViewById<MaterialButton>(R.id.btnMarkLegitDetail)
         val btnBlockSender = findViewById<MaterialButton>(R.id.btnBlockSender)
+        val btnMarkSenderLegit = findViewById<MaterialButton>(R.id.btnMarkSenderLegit)
 
         btnBack.setOnClickListener {
             finish()
@@ -89,7 +90,65 @@ class MessageDetailActivity : AppCompatActivity() {
             showBlockSenderDialog()
         }
 
+        btnMarkSenderLegit.setOnClickListener {
+            showMarkSenderLegitDialog()
+        }
+
         updateBlockButtonState()
+    }
+
+    private fun showMarkSenderLegitDialog() {
+        val messagesFromSender = messageStorage.getMessagesFromSender(currentMessage.sender)
+        val spamCount = messagesFromSender.count { it.isSpam }
+
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("השולח אינו ספאם")
+            .setMessage("""
+                האם אתה בטוח שהשולח ${currentMessage.sender} אינו ספאם?
+                
+                פעולה זו תסמן את כל $spamCount ההודעות ממספר זה כ"לא ספאם" ותלמד את המערכת שהשולח הזה לגיטימי.
+            """.trimIndent())
+            .setPositiveButton("כן, השולח לגיטימי") { _, _ ->
+                markAllSenderMessagesAsLegit()
+            }
+            .setNegativeButton("ביטול", null)
+            .show()
+    }
+
+    private fun markAllSenderMessagesAsLegit() {
+        val spamDetector = SpamDetectorML(this)
+        val messagesFromSender = messageStorage.getMessagesFromSender(currentMessage.sender)
+
+        var updatedCount = 0
+
+        messagesFromSender.forEach { message ->
+            if (message.isSpam) {
+                // לימד את המודל שזה לא ספאם
+                spamDetector.learnFromUser(message.content, message.sender, false)
+                updatedCount++
+            }
+        }
+
+        // הסר מרשימת החסומים אם קיים
+        if (blockedSendersManager.isBlocked(currentMessage.sender)) {
+            blockedSendersManager.unblockSender(currentMessage.sender)
+        }
+
+        Toast.makeText(
+            this,
+            "✅ $updatedCount הודעות מ-${currentMessage.sender} סומנו כלגיטימיות",
+            Toast.LENGTH_LONG
+        ).show()
+
+        // עדכן את התצוגה
+        currentMessage = currentMessage.copy(isSpam = false, isManuallyModified = true)
+        initViews()
+        updateBlockButtonState()
+
+        // חזור למסך הקודם אחרי רגע
+        findViewById<TextView>(R.id.tvCurrentStatus).postDelayed({
+            finish()
+        }, 1500)
     }
 
     private fun updateBlockButtonState() {
@@ -139,24 +198,19 @@ class MessageDetailActivity : AppCompatActivity() {
     }
 
     private fun updateMessageStatus(isSpam: Boolean) {
-        // עדכן רק את המודל ML - לא את מסד הנתונים המקומי
         val spamDetector = SpamDetectorML(this)
         spamDetector.learnFromUser(currentMessage.content, currentMessage.sender, isSpam)
 
-        // עדכן את המצב הנוכחי למטרות תצוגה
         currentMessage = currentMessage.copy(
             isSpam = isSpam,
             isManuallyModified = true
         )
 
-        // עדכן את התצוגה
         initViews()
 
-        // הצג הודעה
         val statusText = if (isSpam) "ספאם" else "רגיל"
         Toast.makeText(this, "ההודעה עודכנה כ$statusText", Toast.LENGTH_SHORT).show()
 
-        // חזור למסך הקודם אחרי שנייה
         findViewById<TextView>(R.id.tvCurrentStatus).postDelayed({
             finish()
         }, 1000)
