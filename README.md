@@ -23,7 +23,10 @@ SMS Spam Filter is a sophisticated Android application that automatically detect
 
 ## 📱 Screenshots
 
-*Screenshots will be added soon*
+<img width="270" height="600" alt="Screenshot_20251109_223330" src="https://github.com/user-attachments/assets/e74aa765-9213-4ee3-82d5-db0d2cafe15f" />
+<img width="270" height="600" alt="Screenshot_20251109_223438" src="https://github.com/user-attachments/assets/06ce637e-2d20-42bb-8775-c6f3fd6549d2" />
+<img width="270" height="600" alt="Screenshot_20251109_223455" src="https://github.com/user-attachments/assets/c14bb0fb-50f1-4e36-8f89-05aef5f07a4c" />
+
 
 ## 🛠️ Technical Stack
 
